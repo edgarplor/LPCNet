@@ -37,19 +37,19 @@ import keras.backend as K
 import h5py
 
 import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
-config = tf.ConfigProto()
-
+#from keras.backend.tensorflow_backend import set_session
+config = tf.compat.v1.ConfigProto()
+from tensorflow.python.keras import backend as K
 # use this option to reserve GPU memory, e.g. for running more than
 # one thing at a time.  Best to disable for GPUs with small memory
 config.gpu_options.per_process_gpu_memory_fraction = 0.44
 
-set_session(tf.Session(config=config))
+K.set_session(tf.compat.v1.Session(config=config))
 
 nb_epochs = 120
 
 # Try reducing batch_size if you run out of memory on your GPU
-batch_size = 64
+batch_size = 124
 
 model, _, _ = lpcnet.new_lpcnet_model()
 
@@ -97,7 +97,7 @@ del sig
 del pred
 
 # dump models to disk as we go
-checkpoint = ModelCheckpoint('lpcnet20_384_10_G16_{epoch:02d}.h5')
+checkpoint = ModelCheckpoint('../drive/My Drive/lpcnet20_384_10_G16_{epoch:02d}.h5')
 
 #model.load_weights('lpcnet9b_384_10_G16_01.h5')
 model.compile(optimizer=Adam(0.001, amsgrad=True, decay=5e-5), loss='sparse_categorical_crossentropy')
