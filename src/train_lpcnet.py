@@ -97,7 +97,13 @@ del sig
 del pred
 
 # dump models to disk as we go
-checkpoint = ModelCheckpoint('../drive/My Drive/lpcnet20_384_10_G16_{epoch:02d}.h5')
+checkpoint = ModelCheckpoint(filepath='../drive/My Drive/lpcnet20_384_10_G16_{epoch:02d}.h5')
+
+if checkpoint_path is not None:
+    # Load model:
+    model = load_model(checkpoint_path)
+    # Finding the epoch index from which we are resuming
+    initial_epoch = get_init_epoch(checkpoint_path)
 
 #model.load_weights('lpcnet9b_384_10_G16_01.h5')
 model.compile(optimizer=Adam(0.001, amsgrad=True, decay=5e-5), loss='sparse_categorical_crossentropy')
