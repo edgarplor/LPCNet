@@ -49,7 +49,7 @@ K.set_session(tf.compat.v1.Session(config=config))
 nb_epochs = 120
 
 # Try reducing batch_size if you run out of memory on your GPU
-batch_size = 124
+batch_size = 100
 
 model, _, _ = lpcnet.new_lpcnet_model()
 
@@ -99,6 +99,6 @@ del pred
 # dump models to disk as we go
 checkpoint = ModelCheckpoint('../drive/My Drive/lpcnet20_384_10_G16_{epoch:02d}.h5')
 
-#model.load_weights('lpcnet9b_384_10_G16_01.h5')
+model.load_weights('../drive/My Drive/lpcnet20_384_10_G16_30.h5')
 model.compile(optimizer=Adam(0.001, amsgrad=True, decay=5e-5), loss='sparse_categorical_crossentropy')
-model.fit([in_data, in_exc, features, periods], out_exc, batch_size=batch_size, epochs=nb_epochs, validation_split=0.0, callbacks=[checkpoint, lpcnet.Sparsify(2000, 40000, 400, (0.05, 0.05, 0.2))])
+model.fit([in_data, in_exc, features, periods], out_exc, batch_size=batch_size, initial_epoch=30, epochs=nb_epochs, validation_split=0.0, callbacks=[checkpoint, lpcnet.Sparsify(2000, 40000, 400, (0.05, 0.05, 0.2))])
